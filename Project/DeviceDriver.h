@@ -15,6 +15,17 @@ public:
     }
 };
 
+class WriteFailException : public exception {
+public:
+    WriteFailException()
+        : exception() {
+
+    }
+    explicit WriteFailException(const char* what)
+        : exception{ what } {
+    }
+};
+
 class DeviceDriver
 {
 public:
