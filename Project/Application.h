@@ -6,6 +6,7 @@ public:
 	Application();
 	Application(DeviceDriver* driver);
 
+	void injectDriver(DeviceDriver* driver);
 	void readAndPrint(long startAddr, long endAddr);
 
 private:

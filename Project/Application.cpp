@@ -11,6 +11,11 @@ Application::Application(DeviceDriver* driver) : _driver{ driver }
 {
 }
 
+void Application::injectDriver(DeviceDriver* driver)
+{
+	_driver = driver;
+}
+
 void Application::readAndPrint(long startAddr, long endAddr)
 {
 	for (long addr = startAddr; addr <= endAddr; ++addr)

@@ -14,10 +14,12 @@ class DriverFixuter : public Test {
 public:
 	MockFlashMemoryDevice mockDevice;
 	DeviceDriver driver;
+	Application app;
 
 protected:
 	void SetUp() override {
 		driver.injectDevice(&mockDevice);
+		app.injectDriver(&driver);
 	}
 };
 
@@ -56,8 +58,6 @@ TEST_F(DriverFixuter, DEVICE_WRITE_SUCCESS) {
 }
 
 TEST_F(DriverFixuter, APP_READ_AND_PRINT) {
-	Application app{ &driver };
-
 	ostringstream oss;
 	auto oldCoutStreamBuf = cout.rdbuf();
 	cout.rdbuf(oss.rdbuf());
