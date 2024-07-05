@@ -42,6 +42,16 @@ TEST_F(DriverFixuter, DEVICE_WRITE_FAIL) {
 	EXPECT_THROW(driver.write(0x00, 0x10), WriteFailException);
 }
 
+TEST_F(DriverFixuter, DEVICE_WRITE_SUCCESS) {
+	EXPECT_CALL(mockDevice, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(mockDevice, write(_, _));
+
+	EXPECT_NO_THROW(driver.write(0x00, 0x11));
+}
+
+
 
 //
 //class TestFixture : public testing::Test {

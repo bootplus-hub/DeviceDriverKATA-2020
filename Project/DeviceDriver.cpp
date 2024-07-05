@@ -15,7 +15,7 @@ void DeviceDriver::injectDevice(FlashMemoryDevice* hardware)
 int DeviceDriver::read(long address)
 {
     int rst = deviceRead(address);
-    for (int cnt = 1; cnt < 5; ++cnt) {
+    for (int cnt = 1; cnt < DEVICE_READ_CNT; ++cnt) {
         if (rst == deviceRead(address)) continue;
         throw ReadFailException("read failed");
     }
