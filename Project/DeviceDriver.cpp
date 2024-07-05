@@ -5,9 +5,10 @@ DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 
 int DeviceDriver::read(long address)
 {
-    int rst = 0;
-    for (int cnt = 0; cnt < 5; ++cnt) {
-        rst = (int)(m_hardware->read(address));
+    int rst = (int)(m_hardware->read(address));
+    for (int cnt = 1; cnt < 5; ++cnt) {
+        if (rst == (int)(m_hardware->read(address))) continue;
+        throw ReadFailException("read failed");
     }
     return rst;
 }

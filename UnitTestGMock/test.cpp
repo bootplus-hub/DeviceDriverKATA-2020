@@ -16,6 +16,17 @@ TEST(MockFlashMemoryDeviceTest, DEVICE_READ_5_COUNT) {
 	driver.read(0x00);
 }
 
+TEST(MockFlashMemoryDeviceTest, DEVICE_READ_FAIL) {
+	MockFlashMemoryDevice mockDevice;
+	DeviceDriver driver{ &mockDevice };
+
+	EXPECT_CALL(mockDevice, read(_))
+		.WillOnce(Return(1))
+		.WillRepeatedly(Return(2));
+
+	EXPECT_THROW(driver.read(0x00), ReadFailException);
+}
+
 
 //
 //class TestFixture : public testing::Test {
