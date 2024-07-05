@@ -72,6 +72,15 @@ TEST_F(DriverFixuter, APP_READ_AND_PRINT) {
 	EXPECT_EQ(oss.str(), string{ "255 255 255 255 255 \n" });
 }
 
+TEST_F(DriverFixuter, APP_WRITE_ALL) {
+	EXPECT_CALL(mockDevice, read(_))
+		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(mockDevice, write(_, _))
+		.Times(5);
+
+	EXPECT_NO_THROW(app.writeAll(1));
+}
+
 
 
 //

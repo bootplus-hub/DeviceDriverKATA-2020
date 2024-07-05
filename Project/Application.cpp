@@ -22,3 +22,10 @@ void Application::readAndPrint(long startAddr, long endAddr)
 		cout << _driver->read(addr) << " ";
 	cout << endl;
 }
+
+void Application::writeAll(int data)
+{
+	for (long addr = 0x00; addr < 0x05; ++addr) {
+		_driver->write(addr, data);
+	}
+}
