@@ -2,18 +2,24 @@
 #include "gmock/gmock.h"
 #include "../packages/gmock.1.11.0/lib/native/src/gmock/src/gmock_main.cc"
 #include "../Project/DeviceDriver.cpp"
+#include "../Project/Application.cpp"
 #include "MockFlashMemoryDevice.hpp"
 
+#include <iostream>
+
+using namespace std;
 using namespace testing;
 
 class DriverFixuter : public Test {
 public:
 	MockFlashMemoryDevice mockDevice;
 	DeviceDriver driver;
+	Application app;
 
 protected:
 	void SetUp() override {
 		driver.injectDevice(&mockDevice);
+		app.injectDriver(&driver);
 	}
 };
 
@@ -49,6 +55,30 @@ TEST_F(DriverFixuter, DEVICE_WRITE_SUCCESS) {
 	EXPECT_CALL(mockDevice, write(_, _));
 
 	EXPECT_NO_THROW(driver.write(0x00, 0x11));
+}
+
+TEST_F(DriverFixuter, APP_READ_AND_PRINT) {
+	ostringstream oss;
+	auto oldCoutStreamBuf = cout.rdbuf();
+	cout.rdbuf(oss.rdbuf());
+
+	EXPECT_CALL(mockDevice, read(_))
+		.WillRepeatedly(Return(0xFF));
+
+	app.readAndPrint(0x01, 0x05);
+
+	cout.rdbuf(oldCoutStreamBuf);
+	
+	EXPECT_EQ(oss.str(), string{ "255 255 255 255 255 \n" });
+}
+
+TEST_F(DriverFixuter, APP_WRITE_ALL) {
+	EXPECT_CALL(mockDevice, read(_))
+		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(mockDevice, write(_, _))
+		.Times(5);
+
+	EXPECT_NO_THROW(app.writeAll(1));
 }
 
 
