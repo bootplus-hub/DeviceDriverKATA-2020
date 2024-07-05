@@ -6,20 +6,25 @@
 
 using namespace testing;
 
-TEST(MockFlashMemoryDeviceTest, DEVICE_READ_5_COUNT) {
+class DriverFixuter : public Test {
+public:
 	MockFlashMemoryDevice mockDevice;
-	DeviceDriver driver{ &mockDevice };
+	DeviceDriver driver;
 
+protected:
+	void SetUp() override {
+		driver.injectDevice(&mockDevice);
+	}
+};
+
+TEST_F(DriverFixuter, DEVICE_READ_5_COUNT) {
 	EXPECT_CALL(mockDevice, read(_))
 		.Times(5);
 
 	driver.read(0x00);
 }
 
-TEST(MockFlashMemoryDeviceTest, DEVICE_READ_FAIL) {
-	MockFlashMemoryDevice mockDevice;
-	DeviceDriver driver{ &mockDevice };
-
+TEST_F(DriverFixuter, DEVICE_READ_FAIL) {
 	EXPECT_CALL(mockDevice, read(_))
 		.WillOnce(Return(1))
 		.WillRepeatedly(Return(2));

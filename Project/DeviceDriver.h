@@ -18,7 +18,10 @@ public:
 class DeviceDriver
 {
 public:
+    DeviceDriver();
     DeviceDriver(FlashMemoryDevice* hardware);
+
+    void injectDevice(FlashMemoryDevice* hardware);
     int read(long address);
     int deviceRead(long address);
     void write(long address, int data);
