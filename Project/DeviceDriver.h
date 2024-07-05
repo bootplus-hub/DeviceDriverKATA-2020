@@ -4,7 +4,7 @@
 
 using std::exception;
 
-class ReadFailException : public std::exception {
+class ReadFailException : public exception {
 public:
     ReadFailException()
         : exception() {
@@ -20,8 +20,12 @@ class DeviceDriver
 public:
     DeviceDriver(FlashMemoryDevice* hardware);
     int read(long address);
+    int deviceRead(long address);
     void write(long address, int data);
 
 protected:
     FlashMemoryDevice* m_hardware;
+
+private:
+    static constexpr int DEVICE_READ_CNT = 5;
 };
