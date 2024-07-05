@@ -34,7 +34,7 @@ TEST_F(DriverFixuter, DEVICE_READ_FAIL) {
 
 TEST_F(DriverFixuter, DEVICE_WRITE_FAIL) {
 	EXPECT_CALL(mockDevice, read(_))
-		.Times(1)
+		.Times(5)
 		.WillRepeatedly(Return(0x0F));
 	EXPECT_CALL(mockDevice, write(_, _))
 		.Times(0);

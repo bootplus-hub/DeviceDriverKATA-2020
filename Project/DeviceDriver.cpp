@@ -35,5 +35,5 @@ void DeviceDriver::write(long address, int data)
 
 bool DeviceDriver::isNotEmptyMemory(long address)
 {
-    return deviceRead(address) != MEMORY_EMPTY;
+    return read(address) != MEMORY_EMPTY;
 }
