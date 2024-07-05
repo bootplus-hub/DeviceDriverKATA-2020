@@ -2,8 +2,12 @@
 #include "gmock/gmock.h"
 #include "../packages/gmock.1.11.0/lib/native/src/gmock/src/gmock_main.cc"
 #include "../Project/DeviceDriver.cpp"
+#include "../Project/Application.cpp"
 #include "MockFlashMemoryDevice.hpp"
 
+#include <iostream>
+
+using namespace std;
 using namespace testing;
 
 class DriverFixuter : public Test {
@@ -49,6 +53,23 @@ TEST_F(DriverFixuter, DEVICE_WRITE_SUCCESS) {
 	EXPECT_CALL(mockDevice, write(_, _));
 
 	EXPECT_NO_THROW(driver.write(0x00, 0x11));
+}
+
+TEST_F(DriverFixuter, APP_READ_AND_PRINT) {
+	Application app{ &driver };
+
+	ostringstream oss;
+	auto oldCoutStreamBuf = cout.rdbuf();
+	cout.rdbuf(oss.rdbuf());
+
+	EXPECT_CALL(mockDevice, read(_))
+		.WillRepeatedly(Return(0xFF));
+
+	app.readAndPrint(0x01, 0x05);
+
+	cout.rdbuf(oldCoutStreamBuf);
+	
+	EXPECT_EQ(oss.str(), string{ "255 255 255 255 255 \n" });
 }
 
 
