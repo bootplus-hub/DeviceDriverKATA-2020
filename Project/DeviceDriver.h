@@ -34,15 +34,16 @@ public:
 
     void injectDevice(FlashMemoryDevice* hardware);
     int read(long address);
-    int deviceRead(long address);
     void write(long address, int data);
-
-    bool isNotEmptyMemory(long address);
 
 protected:
     FlashMemoryDevice* m_hardware;
 
 private:
+    int deviceRead(long address);
+    bool isNotEmptyMemory(long address);
+    void verifyDevice();
+
     static constexpr int DEVICE_READ_CNT = 5;
     static constexpr int MEMORY_EMPTY = 0xFF;
 };
