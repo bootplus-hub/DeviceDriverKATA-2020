@@ -29,6 +29,11 @@ int DeviceDriver::deviceRead(long address)
 
 void DeviceDriver::write(long address, int data)
 {
-    if (deviceRead(address) != 0xFF) throw WriteFailException("write failed");
+    if (isNotEmptyMemory(address)) throw WriteFailException("write failed");
     m_hardware->write(address, (unsigned char)data);
+}
+
+bool DeviceDriver::isNotEmptyMemory(long address)
+{
+    return deviceRead(address) != MEMORY_EMPTY;
 }

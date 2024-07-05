@@ -37,9 +37,12 @@ public:
     int deviceRead(long address);
     void write(long address, int data);
 
+    bool isNotEmptyMemory(long address);
+
 protected:
     FlashMemoryDevice* m_hardware;
 
 private:
     static constexpr int DEVICE_READ_CNT = 5;
+    static constexpr int MEMORY_EMPTY = 0xFF;
 };
